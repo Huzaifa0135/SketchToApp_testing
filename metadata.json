@@ -1,0 +1,6 @@
+{
+  "name": "SketchToApp AI",
+  "description": "Transform hand-drawn mobile app sketches and Figma designs into real Flutter Android applications with AI analysis, visual UI editing, code generation, and APK build pipeline.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

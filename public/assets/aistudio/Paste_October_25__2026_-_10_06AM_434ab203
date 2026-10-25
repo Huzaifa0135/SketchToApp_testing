@@ -1,0 +1,683 @@
+# MASTER PROMPT: BUILD THE COMPLETE SKETCHTOAPP AI ANDROID APPLICATION
+
+## 1. Your role and mission
+
+Act as a senior Android engineer, full-stack architect, AI engineer, database designer, cybersecurity specialist, Flutter developer, UI/UX designer and DevOps engineer.
+
+Build **SketchToApp AI**, a complete, functional, production-oriented Android application that enables users to transform hand-drawn mobile application sketches and Figma designs into real Android applications using artificial intelligence.
+
+Do not build merely a landing page, static UI, clickable mockup or frontend demonstration. Implement the Android application, backend services, database integration, authentication, AI workflows, design editor, Flutter code generator, build pipeline, artifact downloads and automated tests.
+
+Work autonomously through implementation, testing and debugging. Make sensible engineering decisions without asking me to approve every small detail. When credentials, external permissions or infrastructure are unavailable, implement the real integration boundary, document the exact setup needed and continue with everything that can be completed and tested.
+
+**Primary objective:** Deliver a working Android application from which users can create a project, import a sketch or Figma design, review and edit the resulting UI, generate Flutter source code, compile an actual APK through a secure build service, and download the resulting application.
+
+## 2. Critical architecture decision
+
+This product has two separate outputs:
+
+1. **SketchToApp AI Android application:** The native Android app that users install and operate.
+2. **Generated Android applications:** Separate Flutter projects compiled into APK files by the platform.
+
+The SketchToApp AI Android application must not be confused with the applications it generates.
+
+Use native Android development for the main application and Flutter for generated projects.
+
+If the environment supports native Android project generation, use Kotlin and Jetpack Compose. Do not substitute a website for the native Android application.
+
+## 3. Technology stack
+
+Use the following architecture unless a genuine environment limitation requires a documented alternative.
+
+### Native Android frontend
+- Kotlin.
+- Jetpack Compose.
+- Material 3.
+- Navigation Compose.
+- ViewModel and Kotlin Coroutines.
+- Repository-based data access.
+- Dependency injection using Hilt or an appropriate lightweight alternative.
+- Retrofit or Ktor for backend communication.
+- Kotlin serialization.
+- WorkManager for appropriate resumable or deferred operations.
+- Android Photo Picker or supported document picker for image and file selection.
+
+Organize the Android code by feature and domain, not by a traditional MVC directory hierarchy.
+
+### Backend
+Use a secure server-side API implemented in TypeScript with Node.js and an appropriate framework, or use Firebase Cloud Functions where that is the most practical fit.
+
+The backend is responsible for:
+- Authentication and authorization verification.
+- Project and screen operations.
+- Design imports.
+- AI requests.
+- UI schema validation.
+- Flutter code generation orchestration.
+- Build-job creation and status.
+- Artifact management.
+- Usage limits.
+- Audit and operational logging.
+
+Never put privileged credentials in the Android application.
+
+### Database and storage
+Use Firebase Authentication, Cloud Firestore and Firebase Storage as the default integrated backend.
+
+Create appropriate collections for:
+- users
+- projects
+- designs
+- screens or application documents
+- assets
+- generation_jobs
+- build_jobs
+- generated_apps
+- usage_logs
+
+Use stable document IDs, timestamps, ownership references, schema versions and appropriate indexes.
+
+Store large images, design assets, generated source archives and APKs in protected object storage rather than inside database documents.
+
+Use Firestore security rules and backend authorization checks. Do not rely on client-side checks alone.
+
+If Firebase services are unavailable in the execution environment, implement typed service interfaces and a documented configuration path instead of pretending the database is connected.
+
+### AI integration
+Use Gemini through a secure server-side integration.
+
+AI agents must use structured inputs and validated outputs. Use Zod or an equivalent runtime validator for server-side schemas.
+
+### Generated application technology
+- Flutter.
+- Dart.
+- Standard Flutter project structure.
+- Deterministic templates for supported components.
+- Flutter navigation and shared themes.
+- Automated formatting, analysis and tests.
+
+### APK build infrastructure
+Use a separate, isolated build worker with compatible Flutter, Android SDK and JDK installations.
+
+Do not attempt to compile untrusted user-generated code inside the Android app or the ordinary backend request process.
+
+## 4. Native Android application design
+
+Create a premium developer-workstation experience with an approachable interface for beginners.
+
+### Visual identity
+- Product name: SketchToApp AI.
+- Dark navy background: #0B1118.
+- Panel background: #111B24.
+- Elevated surfaces: #16212A.
+- Teal accent: #58E6D0.
+- Primary text: #E8F5F4.
+- Secondary text: #92A6AE.
+- Restrained violet highlights.
+- Subtle borders, clean typography and professional icons.
+- Clear progress indicators, skeleton loading states and accessible dialogs.
+
+Avoid excessive neon, excessive animation and cluttered screens.
+
+Support small and large Android screens, keyboard navigation where applicable, accessibility labels, dark-mode consistency and sensible scrolling.
+
+### Required screens
+Implement these as functional Android screens:
+
+1. Splash and application initialization.
+2. Onboarding.
+3. Sign in and account creation.
+4. Dashboard.
+5. Project creation and management.
+6. Sketch upload.
+7. Figma connection and import.
+8. AI analysis and review.
+9. Visual UI editor.
+10. Component tree.
+11. Screen manager.
+12. Screen-flow editor or a practical mobile-friendly flow view.
+13. Theme and component properties.
+14. Interactive application preview.
+15. Generated Flutter code viewer.
+16. Generation diagnostics.
+17. Build Lab.
+18. Build logs and status.
+19. APK download and artifact details.
+20. Project settings.
+21. Account settings.
+22. Usage and quota information.
+23. Help, error recovery and privacy information.
+
+Use real navigation, real state and real service calls. All buttons must perform their advertised actions or clearly identify a feature that requires configuration.
+
+## 5. Authentication and user accounts
+
+Implement:
+- Account registration.
+- Sign-in and sign-out.
+- Supported password-reset flow.
+- Session persistence.
+- Authentication state restoration.
+- Protected project access.
+- User profile and account settings.
+- Appropriate handling of expired sessions.
+- Backend token verification.
+- Ownership validation for every private resource.
+
+Support Firebase Authentication providers appropriate to the configuration, such as email/password and Google sign-in.
+
+Never trust a user ID supplied by the client without verifying that the authenticated user is authorized to access that resource.
+
+Do not store passwords or privileged tokens in Firestore.
+
+## 6. Project management
+
+Allow users to:
+- Create projects.
+- Rename projects.
+- Delete projects with confirmation.
+- Open recent projects.
+- Duplicate a project where supported.
+- View project creation and update times.
+- View screen counts.
+- View the current pipeline stage.
+- Resume a saved project.
+- Delete associated assets and artifacts according to the configured retention policy.
+
+Persist projects to the configured database. Handle offline states and synchronization failures clearly.
+
+Do not claim cross-device synchronization until the backend persistence and authorization flows have been verified.
+
+## 7. Sketch upload and AI design analysis
+
+Allow users to capture, select or upload a sketch image.
+
+Support appropriate image formats, validate size and file type, show a preview, and allow replacement or removal.
+
+Provide optional crop, rotate and image-adjustment tools where practical.
+
+Send the image securely to the backend AI service.
+
+The design-analysis agent must identify supported UI elements, including:
+- Text.
+- Buttons.
+- Text fields.
+- Images and placeholders.
+- Cards.
+- Containers.
+- Rows and columns.
+- App bars.
+- Lists.
+- Navigation bars.
+- Dividers.
+- Alignment and spacing.
+- Approximate dimensions.
+- Colors and typography where detectable.
+
+Return structured UI data rather than free-form code.
+
+Every component must have a stable ID, type, properties, layout information and valid parent-child relationships. Record uncertainty and warnings when the source is ambiguous.
+
+Do not invent exact text, dimensions or interactions when they cannot be reliably inferred.
+
+Show the original sketch beside a structured component review. Let users correct, rename, remove or reclassify detected components before accepting the design.
+
+Validate all AI responses on the backend. Reject malformed schemas and never execute code returned by an AI model.
+
+## 8. Figma integration
+
+Implement a real Figma import workflow using the documented Figma API.
+
+Support an authorized Figma connection and a valid Figma design URL or file identifier.
+
+Use an appropriate secure OAuth flow for a multi-user application. If a personal access token is used for initial development, keep it server-side and treat it as a temporary development configuration.
+
+The import process must:
+1. Authorize the user.
+2. Validate the Figma URL and file identifier.
+3. Verify access to the requested design.
+4. Retrieve available file and frame data.
+5. Extract supported component hierarchy, text, layout, colors, variables and asset references.
+6. Let users select one or more frames.
+7. Map the selected frames into the same canonical UI schema used for sketches.
+8. Show unsupported features, missing assets and uncertain mappings.
+9. Allow the user to review and accept the imported result.
+
+Handle expired authorization, insufficient permissions, inaccessible files, rate limits and missing assets.
+
+Never request the user's Figma password, bypass permissions or expose access tokens in the Android application.
+
+Do not claim every Figma effect, plugin, animation or interaction can be converted faithfully into Flutter.
+
+## 9. Shared UI schema and visual editor
+
+Create one versioned application-document schema for both sketch and Figma imports.
+
+The schema must support:
+- Application metadata.
+- Multiple screens.
+- Stable screen IDs.
+- Component IDs and hierarchy.
+- Component properties.
+- Layout configuration.
+- Theme tokens.
+- Asset references.
+- Navigation actions.
+- Form validation configuration.
+- Unsupported-feature warnings.
+
+Build a visual editor optimized for Android touch screens.
+
+Users must be able to:
+- Select a screen.
+- Select a component.
+- Edit text and supported visual properties.
+- Change colors, dimensions, spacing and typography.
+- Add, duplicate and delete components.
+- Reorder components where supported.
+- Switch between a phone preview and component list.
+- Undo and redo edits.
+- Save and reopen changes.
+
+Provide a component inspector that displays only properties relevant to the selected component.
+
+Render the preview from the shared schema rather than maintaining a separate unrelated mockup.
+
+Persist the actual edited document and validate it before saving.
+
+If a full drag-and-drop editor is impractical on a phone, implement a reliable touch-friendly selection, tree and property editor rather than delivering a nonfunctional canvas.
+
+## 10. Multi-screen application builder
+
+Support:
+- Creating, renaming, duplicating and deleting screens.
+- Choosing the initial screen.
+- Basic navigation between screens.
+- Button-triggered navigation.
+- Back navigation where appropriate.
+- Shared theme settings.
+- Basic forms and validation.
+- Image and asset references.
+- Interactive preview.
+
+Represent navigation as typed, validated actions. Never execute arbitrary scripts as navigation logic.
+
+When AI suggests navigation that is not explicitly represented in the design, ask the user to confirm it.
+
+Detect invalid destinations, missing components, duplicate IDs, missing assets and unsupported properties before code generation.
+
+## 11. Specialized AI agents
+
+Implement agents as separate backend services or well-defined modules with typed inputs and outputs. They may share the same Gemini model, but each must have a distinct responsibility and testable contract.
+
+### A. Design Analysis Agent
+Analyzes sketches and Figma frames, detects components, infers supported layout information and records uncertainty.
+
+### B. UI Mapping Agent
+Maps design elements to the canonical schema and supported Flutter widgets. Flags unsupported features.
+
+### C. Code Generation Agent
+Coordinates deterministic templates and generates Flutter source from validated application data. It must not blindly accept arbitrary model-generated source as trusted code.
+
+### D. Quality Assurance Agent
+Checks schema consistency, missing assets, invalid navigation, unsupported components and likely generated-code problems. Use deterministic validators and actual Flutter analysis wherever possible; AI review is supplementary.
+
+### E. Build Agent
+Creates a build job, coordinates the isolated worker, monitors actual build results and associates a validated APK artifact with the correct user and project.
+
+### F. Backend Assistant Agent
+Helps explain project configuration, backend integration, authentication and setup errors. It must not have unrestricted access to production data or secrets.
+
+All agents must have bounded inputs, structured outputs, timeouts, error handling, usage limits and observable execution status.
+
+Do not create fake agents that only display decorative status messages.
+
+## 12. Flutter code generation
+
+Generate a complete Flutter project from the validated application document.
+
+The project should include:
+- pubspec.yaml.
+- lib/main.dart.
+- Screen files.
+- Reusable widgets.
+- Navigation configuration.
+- Shared theme.
+- Supported form validation.
+- Asset declarations.
+- Required assets.
+- Basic tests where practical.
+- README with setup and execution instructions.
+
+Map supported components to real Flutter widgets.
+
+Generate readable, maintainable Dart source and avoid unnecessary duplication.
+
+Keep file paths within the generated project root. Validate names and asset paths.
+
+When a component is unsupported, generate a documented safe placeholder or stop with a clear diagnostic rather than silently removing it.
+
+Show the generated file tree and syntax-highlighted source in the Android app.
+
+Allow copying source files and exporting the project as a genuine ZIP archive.
+
+Never report that a project compiles unless it has passed the configured validation process.
+
+## 13. Backend integration
+
+Implement real API endpoints or equivalent server-side functions for:
+- Authentication verification.
+- Project creation, retrieval, updating and deletion.
+- Design upload and analysis.
+- Figma import.
+- Screen and application-document persistence.
+- UI schema validation.
+- Code generation requests.
+- Generated source retrieval.
+- Build-job creation.
+- Build status and logs.
+- Artifact metadata and authorized downloads.
+- Usage and quota checks.
+
+Use consistent response structures, appropriate HTTP status codes, request validation and centralized error handling.
+
+Do not return stack traces, credentials or internal secrets to clients.
+
+Use pagination for collections and enforce request size limits.
+
+Implement rate limits and usage quotas to control expensive AI and build operations.
+
+## 14. Database and data model
+
+Design and document the actual Firestore collection structures.
+
+### users
+Store the authenticated user's profile, account preferences, creation time and applicable usage-plan metadata.
+
+### projects
+Store project ownership, name, description, source type, status, creation time and update time.
+
+### designs
+Store design metadata, source references, schema version, analysis status and validation warnings.
+
+### application documents
+Store screens, component trees, navigation, themes, asset references and schema version. Split large documents into appropriate subcollections or storage objects if necessary.
+
+### assets
+Store authorized asset metadata, storage references, MIME type, size, ownership and checksum where applicable.
+
+### generation_jobs
+Track generation requests, source version, status, diagnostics and output references.
+
+### build_jobs
+Track queue status, timestamps, toolchain versions, exit codes, sanitized logs and artifact references.
+
+### generated_apps
+Store artifact metadata, owning user, project association, build association, storage reference, checksum and expiration information.
+
+### usage_logs
+Store limited operational usage events and timestamps without unnecessary sensitive data.
+
+Create the required Firestore indexes and security rules.
+
+Implement database adapters, loading states, failure handling and integration tests.
+
+Do not store large APK binaries, entire image files or unbounded logs inside Firestore documents.
+
+## 15. Real APK build pipeline
+
+The generated Flutter source must be compiled by a separate build worker.
+
+The backend must submit an authenticated job containing an immutable source snapshot or securely referenced archive.
+
+The worker must:
+1. Create an isolated, resource-limited workspace.
+2. Validate and safely extract the project.
+3. Verify the expected Flutter files.
+4. Resolve dependencies.
+5. Run formatting, analysis and configured tests.
+6. Run the actual Flutter APK build command.
+7. Check process exit codes.
+8. Confirm the APK exists and is nonempty.
+9. Validate available artifact metadata and calculate a checksum.
+10. Upload the APK to protected storage.
+11. Clean up temporary files.
+12. Return the actual result and sanitized logs.
+
+Use a clear job lifecycle: queued, preparing, building, validating, succeeded or failed.
+
+Do not run untrusted generated code with unrestricted access to the backend or host machine.
+
+Enforce build timeouts, resource limits, storage limits, authorization checks and restricted network access.
+
+Provide a documented local worker setup or a separately hosted build-worker configuration when the current platform cannot compile APKs.
+
+The Android app must display a genuine build status and offer a download only after a real APK artifact has been validated.
+
+Distinguish debug APKs from signed release artifacts. Protect signing credentials if release signing is supported.
+
+## 16. File downloads and sharing
+
+Implement:
+- Flutter source ZIP download.
+- APK download.
+- Artifact details.
+- Download progress and error handling.
+- Appropriate Android file permissions or system document APIs.
+- Safe file names.
+- Checksum display where practical.
+- Share functionality using supported Android mechanisms.
+
+Protect downloads with authorization or expiring links. Do not make private artifacts publicly readable by default.
+
+## 17. Security and privacy
+
+Apply security throughout the system:
+- Store secrets in server-side environment configuration or a suitable secret manager.
+- Never embed Gemini or privileged Firebase credentials in the APK.
+- Verify authentication on protected backend operations.
+- Enforce ownership and authorization for projects, designs, jobs and artifacts.
+- Validate uploaded files and imported design data.
+- Protect against path traversal, oversized uploads and malformed archives.
+- Apply appropriate Firebase security rules.
+- Restrict build-worker privileges and resources.
+- Avoid logging passwords, tokens or private design contents.
+- Use HTTPS for production communication.
+- Provide clear privacy and data-retention information.
+- Allow users to delete projects and associated data according to the documented policy.
+
+Do not claim that data is encrypted end-to-end or that the system is production-secure unless those claims have been verified.
+
+## 18. Reliability and user experience
+
+Every asynchronous operation must have:
+- Loading state.
+- Success state.
+- Failure state.
+- Retry behavior where safe.
+- Timeout handling.
+- Useful diagnostics.
+- Protection against duplicate submissions.
+
+Handle network disconnections, API errors, expired sessions, rate limits, missing credentials, invalid AI responses, unavailable Figma files, failed code generation, worker crashes and failed APK builds.
+
+Preserve user edits when a request fails.
+
+Never show fabricated progress, success messages, generated results, logs or download links.
+
+## 19. Testing and verification
+
+Create automated tests appropriate to each layer.
+
+### Android tests
+- Authentication UI states.
+- Navigation.
+- Project management.
+- Editor state.
+- Form validation.
+- Error and loading states.
+- API integration using test doubles.
+
+### Backend tests
+- Authentication and ownership checks.
+- Database operations.
+- Schema validation.
+- AI response validation.
+- Figma authorization and import.
+- Usage limits.
+- Build-job lifecycle.
+- Artifact access control.
+
+### Generator tests
+- Supported component mappings.
+- Multi-screen navigation.
+- Theme generation.
+- Asset packaging.
+- Invalid schema handling.
+- ZIP contents.
+
+### End-to-end tests
+Verify this entire journey:
+
+1. Register or sign in.
+2. Create a project.
+3. Upload a sketch.
+4. Analyze the design.
+5. Review and edit components.
+6. Add screens and navigation.
+7. Save the project.
+8. Generate Flutter source.
+9. Export the source ZIP.
+10. Submit an APK build.
+11. Compile the source on the real build worker.
+12. Download the verified APK.
+13. Install and launch it on an Android emulator or device.
+
+Also verify Figma import using an authorized test design.
+
+If external credentials or infrastructure are unavailable, use mocks for isolated tests, label them clearly and do not count them as proof of a successful live integration.
+
+## 20. Project structure
+
+Use a feature-oriented structure similar to the following, adapting it to the actual tooling:
+
+android-app/
+  app/
+    src/
+      main/
+        java/
+          .../
+            core/
+            features/
+              auth/
+              dashboard/
+              projects/
+              sketch_import/
+              figma_import/
+              design_analysis/
+              visual_editor/
+              screen_flow/
+              code_generation/
+              build_lab/
+              artifacts/
+              settings/
+            navigation/
+            ui/
+            di/
+
+backend/
+  src/
+    modules/
+      auth/
+      users/
+      projects/
+      designs/
+      figma/
+      ai/
+      schema/
+      code_generation/
+      build_jobs/
+      artifacts/
+      usage/
+    shared/
+    config/
+
+build-worker/
+  src/
+  Dockerfile
+  README.md
+
+docs/
+  architecture.md
+  database.md
+  api.md
+  security.md
+  setup.md
+  deployment.md
+  testing.md
+
+tests/
+
+Keep naming consistent and avoid creating empty folders simply to make the project appear complete.
+
+## 21. Configuration and setup
+
+Create:
+- Environment variable examples without real secrets.
+- Firebase setup instructions.
+- Gemini API configuration instructions.
+- Figma OAuth configuration instructions.
+- Firestore security rules.
+- Required indexes.
+- Backend run instructions.
+- Build-worker setup instructions.
+- Android build and emulator instructions.
+- Deployment instructions.
+- A troubleshooting guide.
+
+Never invent credentials or claim that external services are connected without verifying them.
+
+Clearly separate development configuration from production configuration.
+
+## 22. Execution instructions
+
+First inspect the current environment and existing project.
+
+Then implement the complete system in dependency order within this task:
+1. Establish the Android application foundation.
+2. Implement authentication and persistence.
+3. Implement project management.
+4. Implement sketch analysis and Figma import.
+5. Implement the canonical schema and visual editor.
+6. Implement multi-screen projects and preview.
+7. Implement Flutter source generation and ZIP export.
+8. Implement the backend build-job system and isolated worker.
+9. Implement APK download and artifact management.
+10. Run tests, resolve integration issues and document remaining setup.
+
+Do not stop after creating the user interface. Continue through backend integration, data persistence, generation and build-worker integration wherever the environment supports them.
+
+Do not delete or replace existing working functionality without a clear reason.
+
+Do not falsely report completed tasks. If an external service cannot be configured, explain exactly what is missing and finish all independent work that can be verified.
+
+## 23. Definition of done
+
+The project is complete only when:
+- A real native Android application exists.
+- Authentication works with the configured provider.
+- Project data persists in the configured database.
+- Sketch analysis uses a real configured AI service.
+- Figma import works for authorized files.
+- Both inputs produce the same validated application schema.
+- Users can edit and save their designs.
+- Multi-screen navigation works in preview.
+- Flutter source generation creates real files.
+- ZIP export contains the generated project.
+- The backend creates and tracks real build jobs.
+- The isolated worker can compile a real Flutter APK.
+- The APK is validated and securely downloadable.
+- Tests and setup documentation are provided.
+- Unavailable features and external prerequisites are disclosed honestly.
+
+**Start now by inspecting the environment and building SketchToApp AI as a native Android application. Prioritize real end-to-end functionality over visual decoration, fake integrations or claims of production readiness.**

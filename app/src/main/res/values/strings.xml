@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">SketchToApp AI</string>
+    <string name="tagline">Turn hand-drawn sketches &amp; Figma frames into real Flutter Android apps.</string>
+    <string name="action_sign_in_google">Sign in with Google</string>
+    <string name="action_sign_out">Sign Out</string>
+    <string name="action_create_project">New Project</string>
+    <string name="action_upload_sketch">Sketch Import</string>
+    <string name="action_import_figma">Figma Import</string>
+    <string name="action_visual_editor">Visual Editor</string>
+    <string name="action_preview_app">Interactive Preview</string>
+    <string name="action_generate_flutter">Generate Flutter Code</string>
+    <string name="action_export_zip">Export Source ZIP</string>
+    <string name="action_build_lab">Build Lab</string>
+    <string name="security_prototype_notice">Prototype API keys configured via AI Studio Secrets are packaged in BuildConfig for emulator testing. For production deployments, point BACKEND_API_URL to the server-side proxy so privileged keys stay strictly on the server.</string>
+</resources>

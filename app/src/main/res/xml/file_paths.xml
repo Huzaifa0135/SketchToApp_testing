@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <cache-path name="exported_archives" path="exports/" />
+    <files-path name="downloaded_artifacts" path="artifacts/" />
+    <cache-path name="captured_sketches" path="sketches/" />
+</paths>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Outer rounded frame within 66dp safe zone (24..84) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#58E6D0"
+        android:strokeWidth="3.5"
+        android:pathData="M34,27 L74,27 C78.4,27 81,29.6 81,34 L81,74 C81,78.4 78.4,81 74,81 L34,81 C29.6,81 27,78.4 27,74 L27,34 C27,29.6 29.6,27 34,27 Z" />
+    <!-- Bold stylized 'S' + Sketch-to-App ribbon -->
+    <path
+        android:fillColor="#58E6D0"
+        android:pathData="M64,37 L44,37 C39.5,37 36,40.5 36,45 C36,49.5 39.5,53 44,53 L62,53 C63.1,53 64,53.9 64,55 C64,56.1 63.1,57 62,57 L38,57 L38,65 L62,65 C67.5,65 72,60.5 72,55 C72,49.5 67.5,45 62,45 L44,45 C42.9,45 42,44.1 42,43 C42,41.9 42.9,41 44,41 L64,41 Z" />
+    <!-- AI Sparkle top-right -->
+    <path
+        android:fillColor="#9B8CFF"
+        android:pathData="M71,31 L72.8,35.2 L77,37 L72.8,38.8 L71,43 L69.2,38.8 L65,37 L69.2,35.2 Z" />
+    <!-- AI Sparkle bottom-left -->
+    <path
+        android:fillColor="#E8F5F4"
+        android:pathData="M37,67 L38.2,69.8 L41,71 L38.2,72.2 L37,75 L35.8,72.2 L33,71 L35.8,69.8 Z" />
+</vector>

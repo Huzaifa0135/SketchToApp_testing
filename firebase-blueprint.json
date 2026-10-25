@@ -1,0 +1,233 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated user profile, onboarding state, and usage counters. Timestamps must use FieldValue.serverTimestamp().",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Matches Firebase Auth UID." },
+        "displayName": { "type": "string", "description": "User display name (1..80 chars)." },
+        "email": { "type": "string", "format": "email", "description": "Optional user email isolated to owner." },
+        "photoUrl": { "type": "string", "format": "uri", "description": "Optional profile avatar URL." },
+        "planTier": { "type": "string", "enum": ["free", "pro", "enterprise"], "description": "Subscription tier; defaults to free on client creation." },
+        "onboardingCompleted": { "type": "boolean", "description": "Whether onboarding flow was completed." },
+        "aiCallsUsed": { "type": "integer", "description": "Cumulative AI analysis/assistant requests." },
+        "buildsUsed": { "type": "integer", "description": "Cumulative build jobs created." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "displayName", "planTier", "onboardingCompleted", "aiCallsUsed", "buildsUsed", "createdAt", "updatedAt"]
+    },
+    "ProjectRecord": {
+      "title": "ProjectRecord",
+      "description": "User-owned mobile app generation project.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owning Firebase Auth UID." },
+        "name": { "type": "string", "description": "Project display name." },
+        "description": { "type": "string", "description": "Project description." },
+        "packageName": { "type": "string", "description": "Target Flutter Android package identifier." },
+        "sourceType": { "type": "string", "enum": ["sketch", "figma", "blank"], "description": "Design input origin." },
+        "stage": { "type": "string", "enum": ["draft", "imported", "analyzed", "edited", "generated", "building", "ready"], "description": "Current pipeline stage." },
+        "screenCount": { "type": "integer", "description": "Number of screens in canonical document." },
+        "schemaVersion": { "type": "integer", "description": "Canonical schema version." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "name", "description", "packageName", "sourceType", "stage", "screenCount", "schemaVersion", "createdAt", "updatedAt"]
+    },
+    "DesignRecord": {
+      "title": "DesignRecord",
+      "description": "Imported sketch or Figma design metadata and AI analysis status.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owning Firebase Auth UID." },
+        "projectId": { "type": "string", "description": "Parent project ID." },
+        "sourceType": { "type": "string", "enum": ["sketch", "figma"], "description": "Import source type." },
+        "sourceReference": { "type": "string", "description": "Local URI, storage ref, or Figma file key." },
+        "analysisStatus": { "type": "string", "enum": ["pending", "analyzing", "completed", "accepted", "failed"], "description": "AI analysis lifecycle state." },
+        "schemaVersion": { "type": "integer", "description": "Schema version." },
+        "warningCount": { "type": "integer", "description": "Count of uncertain mappings or warnings." },
+        "warningsSummary": { "type": "string", "description": "Human-readable summary of warnings." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "projectId", "sourceType", "sourceReference", "analysisStatus", "schemaVersion", "warningCount", "warningsSummary", "createdAt", "updatedAt"]
+    },
+    "ApplicationDocumentRecord": {
+      "title": "ApplicationDocumentRecord",
+      "description": "Canonical multi-screen UI application metadata, theme tokens, and screen ordering.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owning Firebase Auth UID." },
+        "projectId": { "type": "string", "description": "Parent project ID." },
+        "appName": { "type": "string", "description": "Generated Flutter app title." },
+        "initialScreenId": { "type": "string", "description": "Entry screen ID." },
+        "schemaVersion": { "type": "integer", "description": "Canonical UI schema version." },
+        "primaryColorHex": { "type": "string", "description": "Primary hex color token." },
+        "accentColorHex": { "type": "string", "description": "Secondary/accent hex color token." },
+        "backgroundColorHex": { "type": "string", "description": "Scaffold background hex color token." },
+        "surfaceColorHex": { "type": "string", "description": "Card/surface hex color token." },
+        "fontFamily": { "type": "string", "description": "Selected theme font family." },
+        "darkMode": { "type": "boolean", "description": "Whether generated app defaults to dark mode." },
+        "borderRadiusDp": { "type": "integer", "description": "Component corner radius token in dp." },
+        "screenOrder": { "type": "array", "description": "Bounded ordered list of screen IDs." },
+        "warnings": { "type": "array", "description": "Bounded list of document-level schema warnings." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "projectId", "appName", "initialScreenId", "schemaVersion", "primaryColorHex", "accentColorHex", "backgroundColorHex", "surfaceColorHex", "fontFamily", "darkMode", "borderRadiusDp", "screenOrder", "warnings", "createdAt", "updatedAt"]
+    },
+    "ScreenRecord": {
+      "title": "ScreenRecord",
+      "description": "Canonical screen definition storing native component tree maps and navigation actions.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owning Firebase Auth UID." },
+        "projectId": { "type": "string", "description": "Parent project ID." },
+        "name": { "type": "string", "description": "Screen display name." },
+        "route": { "type": "string", "description": "Typed Flutter route path." },
+        "isInitial": { "type": "boolean", "description": "Whether this screen is the initial route." },
+        "orderIndex": { "type": "integer", "description": "Display order index." },
+        "components": { "type": "array", "description": "Bounded list of native canonical UI component maps." },
+        "warnings": { "type": "array", "description": "Bounded list of screen-level warnings." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "projectId", "name", "route", "isInitial", "orderIndex", "components", "warnings", "createdAt", "updatedAt"]
+    },
+    "AssetRecord": {
+      "title": "AssetRecord",
+      "description": "Authorized external storage asset reference with MIME type, size, and SHA-256 checksum.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owning Firebase Auth UID." },
+        "projectId": { "type": "string", "description": "Parent project ID." },
+        "name": { "type": "string", "description": "Safe asset file name." },
+        "mimeType": { "type": "string", "description": "Validated MIME type." },
+        "sizeBytes": { "type": "integer", "description": "Byte length of asset." },
+        "storageRef": { "type": "string", "description": "Protected object storage or local file reference." },
+        "checksumSha256": { "type": "string", "description": "SHA-256 hex digest." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "projectId", "name", "mimeType", "sizeBytes", "storageRef", "checksumSha256", "createdAt", "updatedAt"]
+    },
+    "GenerationJobRecord": {
+      "title": "GenerationJobRecord",
+      "description": "Flutter source code generation job tracking schema validation, file count, and ZIP export.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owning Firebase Auth UID." },
+        "projectId": { "type": "string", "description": "Parent project ID." },
+        "sourceSchemaVersion": { "type": "integer", "description": "Schema version used for code generation." },
+        "status": { "type": "string", "enum": ["queued", "validating", "generating", "succeeded", "failed"], "description": "Generation lifecycle status." },
+        "fileCount": { "type": "integer", "description": "Number of generated Flutter project files." },
+        "diagnosticsSummary": { "type": "string", "description": "QA validation and diagnostics summary." },
+        "zipStorageRef": { "type": "string", "description": "Exported ZIP archive reference." },
+        "zipChecksumSha256": { "type": "string", "description": "SHA-256 digest of generated ZIP archive." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "projectId", "sourceSchemaVersion", "status", "fileCount", "diagnosticsSummary", "zipStorageRef", "zipChecksumSha256", "createdAt", "updatedAt"]
+    },
+    "BuildJobRecord": {
+      "title": "BuildJobRecord",
+      "description": "Isolated Flutter APK build worker job lifecycle and sanitized logs.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owning Firebase Auth UID." },
+        "projectId": { "type": "string", "description": "Parent project ID." },
+        "generationJobId": { "type": "string", "description": "Associated Flutter source generation job ID." },
+        "buildProfile": { "type": "string", "enum": ["debug", "release"], "description": "APK build profile." },
+        "status": { "type": "string", "enum": ["queued", "preparing", "building", "validating", "succeeded", "failed"], "description": "Build worker lifecycle status." },
+        "workerMode": { "type": "string", "enum": ["remote_worker", "unconfigured"], "description": "Build worker connection state." },
+        "flutterVersion": { "type": "string", "description": "Toolchain version string." },
+        "exitCode": { "type": "integer", "description": "Worker process exit code (-1 while pending)." },
+        "sanitizedLogs": { "type": "string", "description": "Bounded sanitized build log output." },
+        "artifactId": { "type": "string", "description": "Associated generated_apps artifact ID if succeeded." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "projectId", "generationJobId", "buildProfile", "status", "workerMode", "flutterVersion", "exitCode", "sanitizedLogs", "artifactId", "createdAt", "updatedAt"]
+    },
+    "GeneratedAppRecord": {
+      "title": "GeneratedAppRecord",
+      "description": "Verified compiled APK or exported Flutter archive artifact metadata.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owning Firebase Auth UID." },
+        "projectId": { "type": "string", "description": "Parent project ID." },
+        "buildJobId": { "type": "string", "description": "Originating build job ID." },
+        "appName": { "type": "string", "description": "Generated application name." },
+        "packageName": { "type": "string", "description": "Android applicationId of generated APK." },
+        "buildProfile": { "type": "string", "enum": ["debug", "release"], "description": "Debug vs signed release indicator." },
+        "versionName": { "type": "string", "description": "Semantic version name." },
+        "sizeBytes": { "type": "integer", "description": "Artifact size in bytes." },
+        "checksumSha256": { "type": "string", "description": "SHA-256 checksum of artifact." },
+        "storageRef": { "type": "string", "description": "Protected object storage reference." },
+        "downloadUrl": { "type": "string", "description": "Authorized download endpoint or URI." },
+        "expiresAtMs": { "type": "integer", "description": "Artifact retention expiration timestamp (epoch ms)." },
+        "verified": { "type": "boolean", "description": "True only when real APK binary is non-empty and checksum-verified." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "projectId", "buildJobId", "appName", "packageName", "buildProfile", "versionName", "sizeBytes", "checksumSha256", "storageRef", "downloadUrl", "expiresAtMs", "verified", "createdAt", "updatedAt"]
+    },
+    "UsageLogRecord": {
+      "title": "UsageLogRecord",
+      "description": "Append-only operational usage and quota audit event.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owning Firebase Auth UID." },
+        "actionType": { "type": "string", "enum": ["sketch_analysis", "figma_import", "code_generation", "apk_build", "zip_export"], "description": "Metered operation type." },
+        "projectId": { "type": "string", "description": "Associated project ID." },
+        "status": { "type": "string", "enum": ["started", "succeeded", "failed", "quota_exceeded"], "description": "Outcome of metered action." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." }
+      },
+      "required": ["userId", "actionType", "projectId", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Authenticated user profiles, preferences, and quota usage counters."
+    },
+    "/projects/{projectId}": {
+      "schema": "ProjectRecord",
+      "description": "User-owned SketchToApp AI projects."
+    },
+    "/designs/{designId}": {
+      "schema": "DesignRecord",
+      "description": "Sketch and Figma design import records."
+    },
+    "/application_documents/{docId}": {
+      "schema": "ApplicationDocumentRecord",
+      "description": "Canonical versioned multi-screen application metadata and theme tokens."
+    },
+    "/screens/{screenId}": {
+      "schema": "ScreenRecord",
+      "description": "Canonical UI screen definitions and native component trees."
+    },
+    "/assets/{assetId}": {
+      "schema": "AssetRecord",
+      "description": "Authorized design and project asset metadata."
+    },
+    "/generation_jobs/{jobId}": {
+      "schema": "GenerationJobRecord",
+      "description": "Flutter code generation jobs and QA diagnostics."
+    },
+    "/build_jobs/{buildId}": {
+      "schema": "BuildJobRecord",
+      "description": "Isolated APK build worker jobs and sanitized build logs."
+    },
+    "/generated_apps/{artifactId}": {
+      "schema": "GeneratedAppRecord",
+      "description": "Validated APK artifacts and download metadata."
+    },
+    "/usage_logs/{logId}": {
+      "schema": "UsageLogRecord",
+      "description": "Append-only operational usage events."
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "sketchtoapp-backend",
+  "version": "1.0.0",
+  "description": "SketchToApp AI Backend Orchestrator API (Firebase Auth verification, Gemini server-side gateway, Figma OAuth/proxy, and isolated Build Worker queue)",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "node --test test/backend.test.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "firebase-admin": "^13.0.2",
+    "multer": "^1.4.5-lts.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}
